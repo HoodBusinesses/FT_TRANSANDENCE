@@ -7,13 +7,10 @@ export function Game() {
   const box = useRef(null);
   let [scoreA, setScoreA] = useState(0);
   let [scoreB, setScoreB] = useState(0);
-  // const rightRacketRef = useRef(null);
-  // const leftRacketeRef = useRef(null);
-  // const BallRef = useRef(null);
 
   useEffect(() => {
-	const BallSound = new Audio("./BallSound.mp3");
-	const Fail = new Audio("./Fail.mp3");
+	  const BallSound = new Audio("./BallSound.mp3");
+	  const Fail = new Audio("./Fail.mp3");
     const RacketHeight = 90;
     const RacketWidth = 15;
     const ignored = 0;
@@ -52,6 +49,8 @@ export function Game() {
     engine.world.gravity.y = 0;
     //control the speed of simulation 
     engine.timing.timeScale = 1;
+
+
 
     //Creats Objects
     const RacketLeft = Bodies.rectangle(13, 39, RacketWidth, RacketHeight
@@ -123,43 +122,60 @@ export function Game() {
       Bodies.rectangle(render.options.width, render.options.height/2, 5, render.options.height, {isStatic: true, restitution: 1, friction:0, frictionAir:0, frictionStatic:0, label: "right"})
     ];
 
-    // rightRacketRef.current = RacketRight;
-    // leftRacketeRef.current = RacketLeft;
-    // BallRef.current =  Ball;
-
     //add objects to the world
     World.add(engine.world, [...walls, RacketRight, RacketLeft,Fil, Ball]);
 
     // Start the Matter.js engine with Runner instead of Engine.run
     Runner.run(runner, engine); 
     Render.run(render);
-    // Engine.run(engine);
-    // Render.run(render);
-  
-    //Hnader the keys to control the objects
-    const handleKey = (event) => {
-      const canvasHeight = render.options.height;
-      if (event.key === "ArrowUp") {
-        if (RacketRight.position.y - RacketHeight / 2 > 39) {
-          Body.translate(RacketRight, { x: 0, y: -90 });
-        }
-      } else if (event.key === "ArrowDown") {
-        if (RacketRight.position.y + RacketHeight / 2 < (canvasHeight - 39)) {
-          Body.translate(RacketRight, { x: 0, y: 90 });
-        }
-      } else if (event.key === "z") {
-        if (RacketLeft.position.y - RacketHeight / 2 > 39) {
-          Body.translate(RacketLeft, { x: 0, y: -90 });
-        }
-      } else if (event.key === "s") {
-        if (RacketLeft.position.y + RacketHeight / 2 < (canvasHeight - 39)) {
-          Body.translate(RacketLeft, { x: 0, y: 90 });
-        }
-      }
-      else if(event.key === " " || event.keyCode === 32)
-        Body.setVelocity(Ball, { x: 13, y: 3 });
 
-    };
+
+  // Variables for racket movement
+  let racketSpeed = 9;
+  let keys = {};
+  window.addEventListener('keydown', function(event) {
+    keys[event.code] = true;
+  });
+  window.addEventListener('keyup', function(event) {
+    keys[event.code] = false;
+  });
+
+  function RunMovement() {
+    const canvasHeight = render.options.height;
+    let drX = 0;
+    let drY = 0;
+    let dlX = 0;
+    let dlY = 0;
+
+    if (keys['ArrowUp'] ) {
+      drY -= racketSpeed;
+      if(RacketRight.position.y - RacketHeight / 2 > 0 )
+        Matter.Body.translate(RacketRight, { x: drX, y: drY });
+      }
+      if (keys['ArrowDown']) {
+        drY += racketSpeed;
+        if(RacketRight.position.y + RacketHeight / 2 < canvasHeight)
+          Matter.Body.translate(RacketRight, { x: drX, y: drY });
+      }
+      if(keys['KeyW']){
+        dlY -= racketSpeed;
+        if (RacketLeft.position.y - RacketHeight / 2 > 0)
+          Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
+      }
+      if(keys['KeyS']){
+        dlY += racketSpeed;
+        if (RacketLeft.position.y + RacketHeight / 2 < canvasHeight)
+          Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
+      }
+      if(keys['Space']){
+        Body.setVelocity(Ball, { x: 10 , y: 3 });
+      }
+    
+    
+    requestAnimationFrame(RunMovement);
+  }
+
+  RunMovement();
 
     //listen to other object to know when the ball hits the wall/Racket
     Events.on(engine, "collisionStart", (event) => {
@@ -192,13 +208,10 @@ export function Game() {
       })
     })
 
-    window.addEventListener("keydown", handleKey);
-
     return () => {
       Matter.Render.stop(render);
       Matter.Engine.clear(engine);
       Matter.World.clear(engine.world);
-      window.removeEventListener('keydown', handleKey);
     }
   }, []);
   
