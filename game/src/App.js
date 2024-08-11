@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Matter from "matter-js";
 import "./App.css";
 
+
+
 export function Game() {
   const canva = useRef(null);
   const box = useRef(null);
@@ -17,23 +19,17 @@ export function Game() {
     const Width = 1000;
     const Height = 500;
     const initialBallPos = {x: Width /2, y: Height/2};
+
     const Engine = Matter.Engine;
     const Render = Matter.Render;
     const Bodies = Matter.Bodies;
     const World = Matter.World;
     const Runner = Matter.Runner;
-
-    // for lestining to others object and manipulate how object intract with each other
     const Events = Matter.Events;
-
-    //for moving you need the Body object
     const Body = Matter.Body;
-
-    //Engin that calculates and manipulates and manages the simulation of the objects in the world
     const engine = Engine.create();
     const runner = Runner.create();
     
-    //rendring the canvas and objects
     const render = Render.create({
       engine: engine,
       element: box.current,
@@ -47,17 +43,15 @@ export function Game() {
     });
 
     engine.world.gravity.y = 0;
-    //control the speed of simulation 
     engine.timing.timeScale = 1;
 
 
 
-    //Creats Objects
     const RacketLeft = Bodies.rectangle(13, 39, RacketWidth, RacketHeight
       , {
 		label: "RacketR",
       	isStatic: true,
-      	restitution: 1, //how the body bounce 
+      	restitution: 1,
       	friction: 0,
       	frictionAir: 0,
       	frictionStatic: 0,
@@ -82,7 +76,6 @@ export function Game() {
     });
 
     const RacketRight = Bodies.rectangle((render.options.width - 13), (render.options.height - 39), RacketWidth, RacketHeight, {
-      //(x, y, w, h)
 		label: "RacketL",
       	isStatic: true,
       	restitution: 1,
@@ -122,15 +115,12 @@ export function Game() {
       Bodies.rectangle(render.options.width, render.options.height/2, 5, render.options.height, {isStatic: true, restitution: 1, friction:0, frictionAir:0, frictionStatic:0, label: "right"})
     ];
 
-    //add objects to the world
     World.add(engine.world, [...walls, RacketRight, RacketLeft,Fil, Ball]);
 
-    // Start the Matter.js engine with Runner instead of Engine.run
     Runner.run(runner, engine); 
     Render.run(render);
 
 
-  // Variables for racket movement
   let racketSpeed = 9;
   let keys = {};
   window.addEventListener('keydown', function(event) {
@@ -140,6 +130,8 @@ export function Game() {
     keys[event.code] = false;
   });
 
+
+
   function RunMovement() {
     const canvasHeight = render.options.height;
     let drX = 0;
@@ -147,64 +139,71 @@ export function Game() {
     let dlX = 0;
     let dlY = 0;
 
-    if (keys['ArrowUp'] ) {
-      drY -= racketSpeed;
-      if(RacketRight.position.y - RacketHeight / 2 > 0 )
-        Matter.Body.translate(RacketRight, { x: drX, y: drY });
+    switch(true){
+      case keys['ArrowUp'] :{
+        drY -= racketSpeed;
+        if(RacketRight.position.y - RacketHeight / 2 > 0 )
+          Matter.Body.translate(RacketRight, { x: drX, y: drY });
+        break;
       }
-      if (keys['ArrowDown']) {
+      case keys['ArrowDown']:{
         drY += racketSpeed;
         if(RacketRight.position.y + RacketHeight / 2 < canvasHeight)
           Matter.Body.translate(RacketRight, { x: drX, y: drY });
+        break;
       }
-      if(keys['KeyW']){
+      case keys['KeyW']: {
         dlY -= racketSpeed;
         if (RacketLeft.position.y - RacketHeight / 2 > 0)
           Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
+        break;
       }
-      if(keys['KeyS']){
+      case keys['KeyS']: {
         dlY += racketSpeed;
         if (RacketLeft.position.y + RacketHeight / 2 < canvasHeight)
           Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
+        break;
       }
-      if(keys['Space']){
+      case keys['Space']: {
         Body.setVelocity(Ball, { x: 10 , y: 3 });
+        break;
       }
-    
-    
+      default:
+        break;
+
+    }
     requestAnimationFrame(RunMovement);
   }
 
   RunMovement();
 
-    //listen to other object to know when the ball hits the wall/Racket
     Events.on(engine, "collisionStart", (event) => {
       const pairs = event.pairs;
       pairs.forEach((pair) => {
-        const {bodyA, bodyB} = pair;
-        const ball = Ball;
-        let bodyC = 0;
-          if(bodyA === ball)
-            bodyC = bodyB;
-          else if(bodyB === ball)
-              bodyC = bodyA;
+      const {bodyA, bodyB} = pair;
+      const ball = Ball;
+      let bodyC = 0;
+      if(bodyA === ball)
+        bodyC = bodyB;
+      else if(bodyB === ball)
+        bodyC = bodyA;
         
       if(bodyC.label === "left"){
-          setScoreA(prevNumber => prevNumber + 1);
+        setScoreA(prevNumber => prevNumber + 1);
 		    Fail.play();
-          Body.setVelocity(Ball, {x: 0, y: 0});
-		      Body.setPosition(Ball, initialBallPos);
-          console.log("this is left");
-        }
-        else if(bodyC.label === "right"){
-          setScoreB(prevNumber => prevNumber + 1);
-		  Fail.play();
-          Body.setVelocity(Ball, {x: 0, y: 0});
-          Body.setPosition(Ball, initialBallPos);
-          console.log("this is right");
-        }
-		else if(bodyC.label === "RacketR" || bodyC.label === "RacketL")
-			BallSound.play();
+        Body.setVelocity(Ball, {x: 0, y: 0});
+		    Body.setPosition(Ball, initialBallPos);
+        console.log("this is left");
+      }
+      else if(bodyC.label === "right"){
+        setScoreB(prevNumber => prevNumber + 1);
+		    Fail.play();
+        Body.setVelocity(Ball, {x: 0, y: 0});
+        Body.setPosition(Ball, initialBallPos);
+        console.log("this is right");
+      }
+		  else if(bodyC.label === "RacketR" || bodyC.label === "RacketL")
+			  BallSound.play();
       })
     })
 
@@ -216,7 +215,7 @@ export function Game() {
   }, []);
   
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div ref={box} className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-center text-2xl">Game</h1>
 	  <div className="flex space-x-96 text-7xl">
       	<h1>{scoreA}</h1>
