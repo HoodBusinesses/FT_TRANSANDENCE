@@ -175,7 +175,7 @@ const ListenKey = (render, RacketRight, RacketLeft, Ball, RacketHeight, Body) =>
         break;
       }
       case keys["Space"]: {
-        Body.setVelocity(Ball, { x: 10, y: -3 });
+        Body.setVelocity(Ball, { x: 10, y: 3 });
         break;
       }
       default:
