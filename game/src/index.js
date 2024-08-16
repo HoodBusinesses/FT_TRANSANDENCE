@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {Game} from './App';
+import {NavBar} from './Nav';
+import {GameHome} from './Game';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Game />
+    {/* <Game /> */}
+    {/* <NavBar /> */}
+    <GameHome />
   </React.StrictMode>
 );
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import Matter from "matter-js";
-import "./App.css";
 
 const CreatRackets = (Bodies, RacketWidth, RacketHeight, render) => {
   // create the left Racket
@@ -12,12 +11,8 @@ const CreatRackets = (Bodies, RacketWidth, RacketHeight, render) => {
     frictionAir: 0,
     frictionStatic: 0,
     render: {
-      fillStyle: "white",
-      strokeStyle: "blue",
+      fillStyle: "#EEEEEE",
       lineWidth: 1,
-    },
-    chamfer: {
-      radius: 10,
     },
   });
   // create the right Racket
@@ -34,12 +29,8 @@ const CreatRackets = (Bodies, RacketWidth, RacketHeight, render) => {
       frictionAir: 0,
       frictionStatic: 0,
       render: {
-        fillStyle: "white",
-        strokeStyle: "blue",
+        fillStyle: "#FFD369",
         lineWidth: 1,
-      },
-      chamfer: {
-        radius: 10,
       },
     }
   );
@@ -57,7 +48,7 @@ const CreateBallFillWall = (Bodies, render, initialBallPos, ignored) => {
     inertia: Infinity,
     render: {
       lineWidth: 2,
-      strokeStyle: "blue",
+      fillStyle: "#00FFD1"
     },
     collisionFilter: {
       mask: ~ignored,
@@ -75,7 +66,7 @@ const CreateBallFillWall = (Bodies, render, initialBallPos, ignored) => {
         category: ignored,
       },
       render: {
-        fillStyle: "white",
+        fillStyle: "black",
       },
     }
   );
@@ -258,7 +249,7 @@ export function Game() {
         width: Width,
         height: Height,
         wireframes: false,
-        background: "Black",
+        background: "#393E46",
       },
     });
 
@@ -304,10 +295,9 @@ export function Game() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-center text-2xl">Game</h1>
       <div className="flex space-x-96 text-7xl">
-        <h1>{scoreA}</h1>
-        <h1>{scoreB}</h1>
+        <h1 style={{ color: '#FFD369' }}>{scoreA}</h1>
+        <h1 style={{ color: '#FFD369' }}>{scoreB}</h1>
       </div>
       <canvas className="m-5" ref={canva} />
     </div>
