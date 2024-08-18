@@ -1,13 +1,8 @@
 name: pr-check
 
 on:
-    push:
-        branches:
-            - main
-            - develop
     pull_request:
         branches:
-            - main
             - develop
 
 jobs:
@@ -31,3 +26,9 @@ jobs:
 
     - name: Install dependencies
       run: pnpm install
+
+    - name: Run linting
+      run: pnpm run lint
+
+    - name: Deploy to Vercel
+      run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
