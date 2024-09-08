@@ -152,15 +152,22 @@ const ListenKey = (
 ) => {
   let keys = {};
 
-  //listning to button pressed in the keyboard
-  window.addEventListener("keydown", (event) => {
-    keys[event.code] = true;
-    if (event.code === "Space" && isStart) {
-      setIsStart(false);
-      Body.setVelocity(Ball, { x: 12, y: ballSpeed });
-      console.log("Game started");
-    }
+window.addEventListener("keydown", (event) => {
+	keys[event.code] = true;
+  
+	if (event.code === "Space") {
+	  setIsStart((prevIsStart) => {
+		if (prevIsStart) {
+		  Body.setVelocity(Ball, { x: 12, y: ballSpeed });
+		  console.log("Game started");
+		} else {
+		  console.log("Game already started");
+		}
+		return false; // Ensure that `isStart` is set to `false`
+	  });
+	}
   });
+  
   window.addEventListener("keyup", (event) => {
     keys[event.code] = false;
   });
@@ -235,16 +242,16 @@ const Collision = (
 
       //apply sound and score depends on the other object
       if (bodyC.label === "left") {
+        setScoreA((prevNumber) => prevNumber + 1);
         setIsStart(true);
         console.log("game ended");
-        setScoreA((prevNumber) => prevNumber + 1);
         Fail.play();
         Body.setVelocity(Ball, { x: 0, y: 0 });
         Body.setPosition(Ball, initialBallPos);
       } else if (bodyC.label === "right") {
+        setScoreB((prevNumber) => prevNumber + 1);
         setIsStart(true);
         console.log("game ended");
-        setScoreB((prevNumber) => prevNumber + 1);
         Fail.play();
         Body.setVelocity(Ball, { x: 0, y: 0 });
         Body.setPosition(Ball, initialBallPos);
