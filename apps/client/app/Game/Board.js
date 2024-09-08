@@ -76,8 +76,8 @@ const CreateBallFillWall = (
       },
     }
   );
-  //draw walls
-  const walls = [
+  //draw Walls
+  const Walls = [
     Bodies.rectangle(render.canvas.width / 2, 0, render.canvas.width, 5, {
       isStatic: true,
       restitution: 1,
@@ -136,7 +136,7 @@ const CreateBallFillWall = (
     ),
   ];
 
-  return { Ball, Fil, walls };
+  return { Ball, Fil, Walls };
 };
 
 const ListenKey = (
@@ -146,15 +146,22 @@ const ListenKey = (
   Ball,
   RacketHeight,
   Body,
-  ballSpeed
+  ballSpeed,
+  isStart,
+  setIsStart
 ) => {
   let keys = {};
 
   //listning to button pressed in the keyboard
-  window.addEventListener("keydown", function (event) {
+  window.addEventListener("keydown", (event) => {
     keys[event.code] = true;
+    if (event.code === "Space" && isStart) {
+      setIsStart(false);
+      Body.setVelocity(Ball, { x: 12, y: ballSpeed });
+      console.log("Game started");
+    }
   });
-  window.addEventListener("keyup", function (event) {
+  window.addEventListener("keyup", (event) => {
     keys[event.code] = false;
   });
 
@@ -162,48 +169,44 @@ const ListenKey = (
   function RunMovement() {
     let racketSpeed = 12;
     const canvasHeight = render.options.height;
-    let drX = 0;
     let drY = 0;
-    let dlX = 0;
     let dlY = 0;
 
-    switch (true) {
-      case keys["ArrowUp"]: {
-        drY -= racketSpeed;
-        if (RacketRight.position.y - RacketHeight / 2 > 0)
-          Matter.Body.translate(RacketRight, { x: drX, y: drY });
-        break;
-      }
-      case keys["ArrowDown"]: {
-        drY += racketSpeed;
-        if (RacketRight.position.y + RacketHeight / 2 < canvasHeight)
-          Matter.Body.translate(RacketRight, { x: drX, y: drY });
-        break;
-      }
-      case keys["KeyW"]: {
-        dlY -= racketSpeed;
-        if (RacketLeft.position.y - RacketHeight / 2 > 0)
-          Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
-        break;
-      }
-      case keys["KeyS"]: {
-        dlY += racketSpeed;
-        if (RacketLeft.position.y + RacketHeight / 2 < canvasHeight)
-          Matter.Body.translate(RacketLeft, { x: dlX, y: dlY });
-        break;
-      }
-      case keys["Space"]: {
+    if (keys["ArrowUp"]) {
+      drY -= racketSpeed;
+    }
+    if (keys["ArrowDown"]) {
+      drY += racketSpeed;
+    }
 
-        Body.setVelocity(Ball, { x: 12, y: ballSpeed });
-        break;
-      }
-      default:
-        break;
+    if (
+      RacketRight.position.y - RacketHeight / 2 + drY > 0 &&
+      RacketRight.position.y + RacketHeight / 2 + drY < canvasHeight
+    ) {
+      Matter.Body.translate(RacketRight, { x: 0, y: drY });
+    }
+
+    if (keys["KeyW"]) {
+      dlY -= racketSpeed;
+    }
+    if (keys["KeyS"]) {
+      dlY += racketSpeed;
+    }
+
+    if (
+      RacketLeft.position.y - RacketHeight / 2 + dlY > 0 &&
+      RacketLeft.position.y + RacketHeight / 2 + dlY < canvasHeight
+    ) {
+      Matter.Body.translate(RacketLeft, { x: 0, y: dlY });
     }
     //method that helps the browser to draw the object and to run smoothly
     requestAnimationFrame(RunMovement);
   }
   RunMovement();
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+    window.removeEventListener("keyup", handleKeyUp);
+  };
 };
 
 const Collision = (
@@ -213,7 +216,8 @@ const Collision = (
   Ball,
   setScoreA,
   setScoreB,
-  initialBallPos
+  initialBallPos,
+  setIsStart
 ) => {
   //sounds of the ball hitting the Racket and the wall
   const BallSound = new Audio("./BallSound.mp3");
@@ -231,11 +235,15 @@ const Collision = (
 
       //apply sound and score depends on the other object
       if (bodyC.label === "left") {
+        setIsStart(true);
+        console.log("game ended");
         setScoreA((prevNumber) => prevNumber + 1);
         Fail.play();
         Body.setVelocity(Ball, { x: 0, y: 0 });
         Body.setPosition(Ball, initialBallPos);
       } else if (bodyC.label === "right") {
+        setIsStart(true);
+        console.log("game ended");
         setScoreB((prevNumber) => prevNumber + 1);
         Fail.play();
         Body.setVelocity(Ball, { x: 0, y: 0 });
@@ -248,10 +256,11 @@ const Collision = (
 
 export function Game() {
   //initializing the canva and box
+  //   const canva = useRef<HTMLCanvasElement | null >(null);
   const canva = useRef(null);
   const [scoreA, setScoreA] = useState(0);
   const [scoreB, setScoreB] = useState(0);
-
+  const [isStart, setIsStart] = useState(true);
 
   useEffect(() => {
     let ballSpeed = 3;
@@ -294,33 +303,33 @@ export function Game() {
       render.canvas.width = newWidth;
       render.canvas.height = newHeight;
 
-      if (walls) {
-        Matter.Body.setPosition(walls[0], { x: newWidth / 2, y: 0 });
-        Matter.Body.setPosition(walls[1], { x: newWidth / 2, y: newHeight });
-        Matter.Body.setPosition(walls[2], { x: 0, y: newHeight / 2 });
-        Matter.Body.setPosition(walls[3], { x: newWidth, y: newHeight / 2 });
+      if (Walls) {
+        Body.setPosition(Walls[0], { x: newWidth / 2, y: 0 });
+        Body.setPosition(Walls[1], { x: newWidth / 2, y: newHeight });
+        Body.setPosition(Walls[2], { x: 0, y: newHeight / 2 });
+        Body.setPosition(Walls[3], { x: newWidth, y: newHeight / 2 });
 
-        Matter.Body.scale(walls[0], newWidth / Width, 1);
-        Matter.Body.scale(walls[1], newWidth / Width, 1);
-        Matter.Body.scale(walls[2], 1, newHeight / Height);
-        Matter.Body.scale(walls[3], 1, newHeight / Height);
+        Body.scale(Walls[0], newWidth / Width, 1);
+        Body.scale(Walls[1], newWidth / Width, 1);
+        Body.scale(Walls[2], 1, newHeight / Height);
+        Body.scale(Walls[3], 1, newHeight / Height);
       }
       if (RacketLeft && RacketRight) {
-        Matter.Body.setPosition(RacketLeft, { x: 15, y: newHeight / 2 });
-        Matter.Body.setPosition(RacketRight, {
+        Body.setPosition(RacketLeft, { x: 15, y: newHeight / 2 });
+        Body.setPosition(RacketRight, {
           x: newWidth - 15,
           y: newHeight / 2,
         });
 
-        Matter.Body.scale(RacketLeft, 1, newHeight / Height);
-        Matter.Body.scale(RacketRight, 1, newHeight / Height);
+        Body.scale(RacketLeft, 1, newHeight / Height);
+        Body.scale(RacketRight, 1, newHeight / Height);
       }
 
       if (Fil) {
-        Matter.Body.setPosition(Fil, { x: newWidth / 2, y: newHeight / 2 });
-        Matter.Body.scale(Fil, newWidth / Width, newHeight / Height);
+        Body.setPosition(Fil, { x: newWidth / 2, y: newHeight / 2 });
+        Body.scale(Fil, newWidth / Width, newHeight / Height);
       }
-      Matter.Body.setPosition(Ball, { x: newWidth / 2, y: newHeight / 2 });
+      Body.setPosition(Ball, { x: newWidth / 2, y: newHeight / 2 });
 
       Width = newWidth;
       Height = newHeight;
@@ -341,7 +350,7 @@ export function Game() {
     );
 
     // creating Ball Fil and Walls of the board
-    const { Ball, Fil, walls } = CreateBallFillWall(
+    const { Ball, Fil, Walls } = CreateBallFillWall(
       Bodies,
       render,
       initialBallPos,
@@ -349,7 +358,7 @@ export function Game() {
       // engine
     );
     //Adding the bodies to the world
-    World.add(engine.world, [RacketRight, RacketLeft, ...walls, Fil, Ball]);
+    World.add(engine.world, [RacketRight, RacketLeft, ...Walls, Fil, Ball]);
 
     //run the engine and render the canva/bodies
     Runner.run(runner, engine);
@@ -363,12 +372,22 @@ export function Game() {
       Ball,
       RacketHeight,
       Body,
-      ballSpeed
+      ballSpeed,
+      isStart,
+      setIsStart
     );
 
     //run the sound and increment the score when the ball hits the Racktes or Walls
-    Collision(Events, Body, engine, Ball, setScoreA, setScoreB, initialBallPos);
-
+    Collision(
+      Events,
+      Body,
+      engine,
+      Ball,
+      setScoreA,
+      setScoreB,
+      initialBallPos,
+      setIsStart
+    );
     resizeCanvas();
 
     //stopping and cleanning all resources
@@ -378,8 +397,12 @@ export function Game() {
       Matter.World.clear(engine.world);
     };
   }, []);
+
   return (
-    <div className="">
+    <div
+      className=""
+      style={{ height: "100%", backgroundColor: "#222831", color: "#FFD369" }}
+    >
       <div className="flex text-7x justify-center ">
         <h1 className="text-7xl mr-52" style={{ color: "#FFD369" }}>
           {scoreA}
@@ -389,7 +412,14 @@ export function Game() {
           {scoreB}
         </h1>
       </div>
-      <canvas className="block mx-auto " ref={canva} />
+      <div>
+        <canvas className="block mx-auto z-3 text-white" ref={canva} />
+        {isStart && (
+          <h1 className="flex justify-center pt-10 text-4xl z-50">
+            Press Space to START
+          </h1>
+        )}
       </div>
+    </div>
   );
 }
