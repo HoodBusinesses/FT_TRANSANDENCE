@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Matter from "matter-js";
 import {CreatRackets, CreateBallFillWall} from "./Bodies"
-import ListenKey from "./Keys"
-import Collision from "./Collision"
+import {ListenKey} from "./Keys"
+import {Collision} from "./Collision"
+
 
 
 export function Game() {
@@ -16,8 +17,6 @@ export function Game() {
   useEffect(() => {
     let ballSpeed = 3;
     const ignored = 0;
-    let newWidth;
-    let newHeight;
     let Width = window.innerWidth * 0.7;
     let Height = window.innerHeight * 0.6;
     const RacketWidth = 25;
@@ -46,10 +45,10 @@ export function Game() {
         background: "#393E46",
       },
     });
-
+    //For resizing canva depends on the window size
     function resizeCanvas() {
-      newWidth = window.innerWidth * 0.7;
-      newHeight = window.innerHeight * 0.6;
+      let newWidth = window.innerWidth * 0.7;
+      let newHeight = window.innerHeight * 0.6;
 
       render.canvas.width = newWidth;
       render.canvas.height = newHeight;
@@ -74,6 +73,14 @@ export function Game() {
 
         Body.scale(RacketLeft, 1, newHeight / Height);
         Body.scale(RacketRight, 1, newHeight / Height);
+
+
+        // if (
+        //   RacketLeft.position.y - RacketHeight / 2 + dlY > 0 &&
+        //   RacketLeft.position.y + RacketHeight / 2 + dlY < canvasHeight
+        // ) {
+        //   Body.translate(RacketLeft, { x: 0, y: dlY });
+        // }
       }
 
       if (Fil) {
@@ -88,7 +95,6 @@ export function Game() {
 
     window.addEventListener("resize", resizeCanvas);
 
-    //set the gravity to 0 and the speed of object to normal(1) in the world
     engine.world.gravity.y = 0;
     engine.timing.timeScale = 1;
 
@@ -106,12 +112,10 @@ export function Game() {
       render,
       initialBallPos,
       ignored
-      // engine
     );
-    //Adding the bodies to the world
+
     World.add(engine.world, [RacketRight, RacketLeft, ...Walls, Fil, Ball]);
 
-    //run the engine and render the canva/bodies
     Runner.run(runner, engine);
     Render.run(render);
 
@@ -124,7 +128,6 @@ export function Game() {
       RacketHeight,
       Body,
       ballSpeed,
-      isStart,
       setIsStart
     );
 
@@ -139,6 +142,7 @@ export function Game() {
       initialBallPos,
       setIsStart
     );
+
     resizeCanvas();
 
     //stopping and cleanning all resources

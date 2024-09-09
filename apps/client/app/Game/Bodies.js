@@ -43,11 +43,10 @@ export const CreateBallFillWall = (
     Bodies,
     render,
     initialBallPos,
-    ignored,
-    engine
+    ignored
   ) => {
     //draw the Ball
-    const Ball = Bodies.circle(initialBallPos.x, initialBallPos.y, 20, {
+    const Ball = Bodies.circle(initialBallPos.x, initialBallPos.y, 25, {
       restitution: 1,
       friction: 0,
       frictionAir: 0,
