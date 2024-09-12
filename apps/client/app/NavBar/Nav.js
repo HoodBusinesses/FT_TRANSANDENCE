@@ -70,7 +70,7 @@ export default function SideBar() {
     <div className="flex h-24 items-center gap-5 absolute left-5 ">
       <Button
         onClick={toggleDrawer(true)}
-        className=" lg:hidden "
+        className=" lg:invisible "
         style={{ color: "#FFD369"}}
       >
         <IoMenu className="text-4xl" />
