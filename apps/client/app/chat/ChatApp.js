@@ -83,7 +83,7 @@ const ChatApp = () => {
   );
 
   return (
-    <div className="flex h-screen p-2 bg-[#393E46]">
+    <div className="flex absolute right-8 left-8 top-8 bottom-8 p-2 bg-[#393E46] rounded-lg border-2 border-[#ffd369]">
       {/* User List */}
       {isUserListVisible && (
         <div className="lg:hidden absolute left-0 overflow-y-auto pt-2 scrollbar-thin scrollbar-thumb-[#FFD369] scrollbar-track-gray-800 bg-[#222831] h-full z-10">
