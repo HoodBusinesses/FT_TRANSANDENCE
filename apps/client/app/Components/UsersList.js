@@ -6,12 +6,12 @@ const UserList = ({ users, onUserSelect, selectedUser }) => {
       <ul className="space-y-4">
         {users.map((user, index) => (
           <li 
-            key={index} 
+            key={index}
             className={`flex items-center p-1 bg-[#393E46] rounded-md cursor-pointer transition-colors ${user.name === selectedUser?.name ? 'border-b-4 border-[#FFD369]' : ''}`}
             onClick={() => onUserSelect(user)}
           >
             <div className='relative'>
-              <img src="./user_img.svg" alt="user_img" className="mr-4" />
+              <img src={user.image} alt="user_img" className="mr-4 w-10 h-10 rounded-full" />
               <span className={`absolute top-2 right-6 transform translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full ${user.isOnline ? 'bg-[#FFD369]' : 'bg-[#eb2e2e]'}`}></span>
             </div>
             <div className="flex-1">

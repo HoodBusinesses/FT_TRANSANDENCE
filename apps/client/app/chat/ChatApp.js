@@ -1,24 +1,24 @@
 "use client";
 
 import React, { useState } from 'react';
-import UserList from './UsersList';
-import Chat from './Chat';
-import ChatHeader from './chatHeader';
-import Input from './Input';
+import UserList from '../Components/UsersList';
+import Chat from '../Components/Chat';
+import ChatHeader from '../Components/chatHeader';
+import Input from '../Components/Input';
 
 const users = [
-  { name: 'Ahmed', timestamp: '07:25', isOnline: true, hasNotification: false },
-  { name: 'Abdelfatah', timestamp: '09:21', isOnline: true, hasNotification: true },
-  { name: 'Yousra', timestamp: '12:43', isOnline: false, hasNotification: true },
-  { name: 'Ayoub', timestamp: '18:56', isOnline: true, hasNotification: false },
-  { name: 'Abdellah', timestamp: '14:07', isOnline: false, hasNotification: true, unreadMessages: 3 },
-  { name: 'Anas', timestamp: '8:26', isOnline: true, hasNotification: false },
-  { name: 'Ahmed1', timestamp: '07:25', isOnline: true, hasNotification: false },
-  { name: 'Abdelfatah1', timestamp: '09:21', isOnline: true, hasNotification: true },
-  { name: 'Yousra1', timestamp: '12:43', isOnline: false, hasNotification: true },
-  { name: 'Ayoub1', timestamp: '18:56', isOnline: true, hasNotification: false },
-  { name: 'Abdellah1', timestamp: '14:07', isOnline: false, hasNotification: true, unreadMessages: 13 },
-  { name: 'Anas1', timestamp: '8:26', isOnline: true, hasNotification: false },
+  { name: 'Ahmed', image : './ahmed.png', timestamp: '07:25', isOnline: true, hasNotification: false },
+  { name: 'Abdelfatah', image : './abdelfetah.png', timestamp: '09:21', isOnline: true, hasNotification: true },
+  { name: 'Yousra', image : './yousra.png', timestamp: '12:43', isOnline: false, hasNotification: true },
+  { name: 'Ayoub', image : './ayoub.png', timestamp: '18:56', isOnline: true, hasNotification: false },
+  { name: 'Abdellah', image : './abdelah.png', timestamp: '14:07', isOnline: false, hasNotification: true, unreadMessages: 3 },
+  { name: 'Anas', image : './anas.png', timestamp: '8:26', isOnline: true, hasNotification: false },
+  { name: 'Ahmed1', image : './ahmed.png', timestamp: '07:25', isOnline: true, hasNotification: false },
+  { name: 'Abdelfatah1', image : './abdelfetah.png', timestamp: '09:21', isOnline: true, hasNotification: true },
+  { name: 'Yousra1', image : './yousra.png', timestamp: '12:43', isOnline: false, hasNotification: true },
+  { name: 'Ayoub1', image : './ayoub.png', timestamp: '18:56', isOnline: true, hasNotification: false },
+  { name: 'Abdellah1', image : './abdelah.png', timestamp: '14:07', isOnline: false, hasNotification: true, unreadMessages: 13 },
+  { name: 'Anas1', image : './anas.png', timestamp: '8:26', isOnline: true, hasNotification: false },
 ];
 
 const initialMessages = {
@@ -106,7 +106,7 @@ const ChatApp = () => {
             placeholder='Search users...'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className='w-full p-2 rounded bg-[#393E46]   text-white'
+            className='w-full p-2 rounded bg-[#393E46] text-white'
           />
         </div>
         <UserList users={filteredUsers} onUserSelect={handleUserSelect} selectedUser={selectedUser} />
