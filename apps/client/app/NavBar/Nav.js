@@ -3,10 +3,12 @@ import { IoMenu } from "react-icons/io5";
 import Notif from "./Notification";
 import User from "./User";
 import Language from "./Language";
+import Search from "./Search";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
+
 
 const NavBarItems = ({ item, index }) => {
 	const { icon, title, isVisible } = item;
@@ -31,7 +33,7 @@ const NavBarItems = ({ item, index }) => {
   };
   
 
-export default function SideBar() {
+function SideBar() {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -132,6 +134,7 @@ export function NavBar() {
             {navItems.map((item, index) => (
               <NavBarItems key={index} item={item} />
             ))}
+            <Search />
             <Notif isSmall={false} />
             <Language isSmall={false} />
             <User isSmall={false} />
