@@ -11,7 +11,7 @@ const Language = ({ isSmall }) => {
       >
         <div>
           <HiLanguage
-            className={`w-6 h-6  cursor-pointer ${
+            className={`h-6 w-6  cursor-pointer ${
               isSmall ? "lg:hidden" : " hidden lg:block"
             }`}
           />

@@ -47,13 +47,13 @@ const Notif = ({ isSmall }) => {
         <img
           src="./bell.svg"
           divlt="notification"
-          className={`w-5 mr-5 cursor-pointer ${
+          className={`w-5 cursor-pointer ${
             isSmall ? "lg:hidden " : " hidden lg:block"
           } `}
         />
         {hasNewNotif && (
           <div
-            className={`absolute top-0 right-5 w-2 h-2 flex items-end bg-red-600 rounded-full ${
+            className={`absolute top-0 right-0 w-2 h-2 flex items-end bg-red-600 rounded-full ${
               isSmall ? "lg:hidden " : " hidden lg:block"
             }`}
           ></div>
@@ -66,10 +66,10 @@ const Notif = ({ isSmall }) => {
           }`}
           style={{ backgroundColor: "#393E46" }}
         >
-          <ul>
+          <ul className="">
             {notification.map((notif, index) => (
               <li
-                className=" menu px-4 py-2 cursor-pointer hover:bg-slate-300 text-sm rounded-md h-auto hover:text-black"
+                className=" menu px-4 py-2 cursor-pointer hover:bg-slate-300 text-sm rounded-md h-auto hover:text-black "
                 key={index}
               >
                 {notif}
@@ -83,3 +83,7 @@ const Notif = ({ isSmall }) => {
 };
 
 export default Notif;
+
+
+
+

@@ -9,29 +9,27 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 
-
 const NavBarItems = ({ item, index }) => {
-	const { icon, title, isVisible } = item;
-  
-	if (!isVisible) {
-	  return null;
-	}
-  
-	return (
-	  <a className="flex lg:flex-col items-center  px-5 text-end ">
-		<img
-		  src={icon}
-		  alt={title}
-		  className="w-5 h-5 lg:w-7 mr-2 lg:mr-0 lg:h-6 "
-		/>
-		{/* w-16 */}
-		<div className="text-start">
-		  <span>{title}</span>
-		</div>
-	  </a>
-	);
-  };
-  
+  const { icon, title, isVisible } = item;
+
+  if (!isVisible) {
+    return null;
+  }
+
+  return (
+    <a href="#" className="flex lg:flex-col items-center  px-5 text-end ">
+      <img
+        src={icon}
+        alt={title}
+        className="w-5 h-5 lg:w-7 mr-2 lg:mr-0 lg:h-6 "
+      />
+      {/* w-16 */}
+      <div className="text-start">
+        <span>{title}</span>
+      </div>
+    </a>
+  );
+};
 
 function SideBar() {
   const [open, setOpen] = React.useState(false);
@@ -58,8 +56,8 @@ function SideBar() {
       <List>
         <div className="icons flex flex-col-reverse gap-12 absolute top-0 right-1/4 ">
           {navItems.map((item, index) => (
-			  <NavBarItems key={index} item={item} />
-			))}
+            <NavBarItems key={index} item={item} />
+          ))}
           <Notif isSmall={false} />
           <Language isSmall={false} />
           <User isSmall={false} />
@@ -73,7 +71,7 @@ function SideBar() {
       <Button
         onClick={toggleDrawer(true)}
         className=" lg:invisible "
-        style={{ color: "#FFD369"}}
+        style={{ color: "#FFD369" }}
       >
         <IoMenu className="text-4xl" />
       </Button>
@@ -91,13 +89,11 @@ const navItems = [
   { title: "Home", icon: "./Home.svg", isVisible: true },
 ];
 
-
-
 export function NavBar() {
-//   const [isNavOpen, setIsNavOpen] = useState(false);
-//   const handleToggle = () => {
-//     setIsNavOpen(!isNavOpen);
-//   };
+  //   const [isNavOpen, setIsNavOpen] = useState(false);
+  //   const handleToggle = () => {
+  //     setIsNavOpen(!isNavOpen);
+  //   };
 
   return (
     <div
@@ -118,8 +114,8 @@ export function NavBar() {
           </a>
         </div>
         {/* the responsive bar */}
-        <div className="flex h-24 items-center gap-5 absolute left-5"></div>
         <div className="flex ml-auto items-center gap-5">
+          <Search isSmall={true} />
           <Language isSmall={true} />
           <Notif isSmall={true} />
           <User isSmall={true} />
@@ -134,7 +130,7 @@ export function NavBar() {
             {navItems.map((item, index) => (
               <NavBarItems key={index} item={item} />
             ))}
-            <Search />
+            <Search isSmall={false} />
             <Notif isSmall={false} />
             <Language isSmall={false} />
             <User isSmall={false} />
