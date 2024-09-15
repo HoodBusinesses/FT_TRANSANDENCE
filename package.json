@@ -1,5 +1,5 @@
 {
-  "name": "ft",
+  "name": "@repo/ui",
   "private": true,
   "scripts": {
     "build": "turbo build",
