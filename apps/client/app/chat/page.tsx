@@ -1,6 +1,6 @@
 import React from 'react';
-import ChatApp from './chat/ChatApp';
-import './globals.css';
+import ChatApp from './ChatApp';
+import '../globals.css';
 
 function App() {
     return (
