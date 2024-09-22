@@ -1,39 +1,26 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  height: 100%;
+  background-color: "#222831";
+  font-family: "Kaisei Decol";
+  color: "#FFD369";
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+.slide {
+  padding-top: 40px;
+  height: 400px;
+  /* background-color: brown; */
 }
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.slide img {
+  transition: transform 0.5s ease;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
+.active img {
+  transform: scale(1.2);
 }
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.inactive img {
+  transform: scale(0.8);
 }
