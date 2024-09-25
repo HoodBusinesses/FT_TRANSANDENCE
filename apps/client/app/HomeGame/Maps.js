@@ -4,6 +4,50 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ResponsiveCarousel } from "./Carousel";
 
+import { useState } from "react";
+
+function LinkGroup() {
+  const [activeLink, setActiveLink] = useState("classic");
+
+  return (
+    <div className="flex justify-center gap-10 mb-16">
+      <a
+        className="bg-[#393E46] p-7 rounded-lg w-48 text-center relative group cursor-pointer "
+        href="#"
+        onClick={() => setActiveLink("classic")}
+        aria-label="Classic option"
+      >
+        <span
+          className={`w-4 h-4 rounded-full absolute top-2 right-2 transition-all ${
+            activeLink === "classic"
+              ? "bg-golden"
+              : "bg-blue_dark group-hover:bg-golden group-focus:bg-golden"
+          }`}
+        />
+        <span className="text-2xl tracking-widest">Classic</span>
+      </a>
+
+      <a
+        className="bg-[#393E46] p-7 rounded-lg w-48 text-center relative group cursor-pointer"
+        href="#"
+        onClick={() => setActiveLink("tournament")}
+        aria-label="Tournament option"
+      >
+        <span
+          className={`w-4 h-4 rounded-full absolute top-2 right-2 transition-all ${
+            activeLink === "tournament"
+              ? "bg-golden"
+              : "bg-blue_dark group-hover:bg-golden group-focus:bg-golden"
+          }`}
+        />
+        <span className="text-2xl tracking-widest">Tournament</span>
+      </a>
+    </div>
+  );
+}
+
+export default LinkGroup;
+
 export function Maps() {
   return (
     <div
@@ -28,25 +72,13 @@ export function Maps() {
             Mode
           </h1>
         </div>
-        <div className="flex justify-center gap-10 mb-16">
-          <a
-            className="bg-[#393E46] p-7 rounded-lg w-48 text-center relative group"
-            href="./#"
-          >
-            <span className="w-4 h-4 rounded-full absolute top-2 right-2 transition-all bg-blue_dark group-hover:bg-golden" />
-            <span className="text-2xl tracking-widest"> Classic </span>
-          </a>
-          <a className=" bg-[#393E46] p-7 rounded-lg w-48 relative group" href="./#">
-            <span className="w-4 h-4 rounded-full absolute top-2 right-2 transition-all bg-blue_dark group-hover:bg-golden" />
-            <span className="text-2xl tracking-widest"> Tournament </span>
-          </a>
-        </div>
-        <div className="flex justify-center pb-20">
+        <LinkGroup />
+        <div className="flex justify-center pb-5">
           <a
             href="./#"
-            className="bg-[#393E46] p-5 m-24 rounded-[30px] w-48 border text-center "
+            className="bg-[#393E46] p-5 m-24 rounded-[30px] w-48 border text-center transition-all  hover:shadow-2xl shadow-golden hover:bg-slate-300 hover:text-black "
           >
-            <span className="text-2xl tracking-widest ">Play</span>{" "}
+            <span className="text-2xl tracking-widest ">Play</span>
           </a>
         </div>
       </div>
