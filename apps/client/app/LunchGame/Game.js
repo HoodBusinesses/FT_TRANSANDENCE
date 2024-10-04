@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Game } from "./Board"
+import { Game } from "./Board";
 
-export function GameHome(){
+export function GameHome() {
   return (
     <div
       className=" text-sm h-lvh min-h-screen"
-      style={{ 
+      style={{
         backgroundColor: "#222831",
         fontFamily: "Kaisei Decol",
         color: "#FFD369",
       }}
-    >+
+    >
       <div className="flex w-full justify-between mb-12">
         <a href="#" className="flex p-6">
           <img
@@ -51,4 +51,4 @@ export function GameHome(){
       </div>
     </div>
   );
-};
+}
